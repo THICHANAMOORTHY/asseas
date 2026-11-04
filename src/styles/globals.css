@@ -1,0 +1,117 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* EASA College of Engineering and Technology Institutional Theme */
+    --background: 250 43% 98%; /* #F7F6FC Light Lavender */
+    --foreground: 248 50% 18%; /* #1D1745 Dark Navy */
+
+    --card: 0 0% 100%; /* #FFFFFF White */
+    --card-foreground: 248 50% 18%; /* #1D1745 Dark Navy */
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 248 50% 18%;
+
+    /* Royal Purple #29136F */
+    --primary: 254 71% 25%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Soft Lavender secondary #E8E5F5 */
+    --secondary: 251 44% 93%;
+    --secondary-foreground: 254 71% 25%;
+
+    --muted: 251 30% 94%;
+    --muted-foreground: 250 20% 45%;
+
+    /* Golden Yellow #FFC20E */
+    --accent: 45 100% 53%;
+    --accent-foreground: 254 71% 25%;
+
+    /* Danger Red #D94343 */
+    --destructive: 0 66% 56%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Success Green #168B55 */
+    --success: 152 73% 32%;
+    --success-foreground: 0 0% 100%;
+
+    --warning: 45 100% 53%;
+    --warning-foreground: 254 71% 25%;
+
+    /* Soft Lavender Border #E8E5F5 */
+    --border: 251 44% 90%;
+    --input: 251 44% 90%;
+    --ring: 254 71% 25%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    /* Dark mode tuned for EASA deep navy/purple palette */
+    --background: 248 50% 12%; /* #130f2e */
+    --foreground: 250 43% 98%;
+
+    --card: 248 48% 16%;
+    --card-foreground: 250 43% 98%;
+
+    --popover: 248 48% 16%;
+    --popover-foreground: 250 43% 98%;
+
+    --primary: 45 100% 53%; /* Golden Yellow for high contrast in dark */
+    --primary-foreground: 254 71% 25%;
+
+    --secondary: 254 50% 24%;
+    --secondary-foreground: 250 43% 98%;
+
+    --muted: 254 40% 20%;
+    --muted-foreground: 250 25% 70%;
+
+    --accent: 45 100% 53%;
+    --accent-foreground: 254 71% 25%;
+
+    --destructive: 0 66% 56%;
+    --destructive-foreground: 0 0% 100%;
+
+    --success: 152 73% 40%;
+    --success-foreground: 0 0% 100%;
+
+    --warning: 45 100% 53%;
+    --warning-foreground: 254 71% 25%;
+
+    --border: 254 40% 24%;
+    --input: 254 40% 24%;
+    --ring: 45 100% 53%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+  /* Enforce tabular figures for metrics, statistics, IDs and probabilities */
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Custom scrollbars for clean dashboard display */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.5);
+}
