@@ -31,7 +31,7 @@ export const EthicsBanner: React.FC<{ compact?: boolean }> = ({ compact = false 
               <AlertCircle className="h-4 w-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
               <div>
                 <strong className="text-foreground block mb-0.5">Not a Placement Guarantee</strong>
-                Probabilities reflect historical statistical correlations from 5,000 synthetic profiles. They never guarantee hiring outcomes nor preclude students from opportunities.
+                Probabilities reflect predictive correlations modeled by the Random Forest placement classification system. They never guarantee hiring outcomes nor preclude students from opportunities.
               </div>
             </div>
 

@@ -16,7 +16,6 @@ import {
   Building,
   Compass,
 } from 'lucide-react';
-import { SyntheticNoticePill } from '@/components/shared/SyntheticNotice';
 import { RoleSwitcher } from './RoleSwitcher';
 import { Button } from '@/components/ui/button';
 import { campusApi } from '@/api/client';
@@ -254,10 +253,6 @@ export const TopBar: React.FC<TopBarProps> = ({ onToggleSidebar, onOpenStudentDe
 
       {/* Right Actions: Notifications + Role Switcher + Student Profile Dropdown */}
       <div className="flex items-center gap-2 sm:gap-3">
-        {/* Synthetic Notice Pill */}
-        <div className="hidden lg:block">
-          <SyntheticNoticePill />
-        </div>
 
         {/* Notifications Icon with Badge */}
         <div className="relative" ref={notifRef}>

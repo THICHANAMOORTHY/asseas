@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { campusApi } from '@/api/client';
 import { CAMPUS_DRIVES, CampusDrive } from '@/api/drivesData';
 import { useAuthRole } from '@/context/AuthRoleContext';
 import { Department } from '@/api/types';
@@ -30,12 +31,20 @@ export const CampusDrives: React.FC = () => {
   const [deptFilter, setDeptFilter] = useState<string>('ALL');
   const [registeredDrives, setRegisteredDrives] = useState<Record<string, boolean>>({});
 
-  // Mock student stats for checking eligibility
+  // Real candidate stats loaded from student profile
+  const [candidateProfile, setCandidateProfile] = useState<any>(null);
+
+  useEffect(() => {
+    campusApi.getStudentById(currentUser.studentId || '720523106032').then((stu) => {
+      if (stu) setCandidateProfile(stu);
+    });
+  }, [currentUser.studentId]);
+
   const candidateStats = {
-    cgpa: 7.85,
-    department: (currentUser.department || 'CSE') as Department,
-    backlogs: 0,
-    programming_score: 78,
+    cgpa: candidateProfile?.cgpa ?? 8.11,
+    department: (candidateProfile?.department || currentUser.department || 'ECE') as Department,
+    backlogs: candidateProfile?.backlogs ?? 0,
+    programming_score: candidateProfile?.programming_score ?? 78,
   };
 
   const checkEligibility = (drive: CampusDrive) => {

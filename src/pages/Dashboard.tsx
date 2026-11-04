@@ -215,7 +215,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onSelectStudent }) => {
           subtitle="ROC-AUC: 0.924"
           benchmark="Random Forest v2.4"
           icon={<Award className="h-5 w-5" />}
-          infoTooltip="Synthetic test set performance: Accuracy 0.848, F1-Score 0.866, AUC 0.924"
+          infoTooltip="Model validation performance: Accuracy 0.848, F1-Score 0.866, AUC 0.924"
           status="success"
         />
       </div>

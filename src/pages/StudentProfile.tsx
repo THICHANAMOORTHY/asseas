@@ -49,7 +49,7 @@ export const StudentProfile: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   // Target student id is either the route param /students/:id or current student's id
-  const targetId = id || (isStudent ? currentUser.studentId || 'CH-2025-0001' : 'CH-2025-0001');
+  const targetId = id || (isStudent ? currentUser.studentId || '720523106032' : '720523106032');
 
   useEffect(() => {
     let mounted = true;
@@ -58,7 +58,7 @@ export const StudentProfile: React.FC = () => {
       try {
         let found = await campusApi.getStudentById(targetId);
         if (!found) {
-          found = await campusApi.getStudentById('CH-2025-0001');
+          found = await campusApi.getStudentById('720523106032');
         }
         if (mounted && found) {
           setStudent(found);

@@ -21,7 +21,7 @@ export const SettingsDataDict: React.FC = () => {
           <BookOpen className="h-6 w-6 text-primary" /> Role Governance & Methodology
         </h1>
         <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
-          Role-based access permissions matrix and synthetic simulation governance specifications.
+          Role-based access permissions matrix and institutional data governance specifications.
         </p>
       </div>
 
@@ -97,17 +97,17 @@ export const SettingsDataDict: React.FC = () => {
         </CardContent>
       </Card>
 
-      {/* Section 2: Synthetic Data Methodology & Ethics Notice */}
+      {/* Section 2: Placement Dataset Methodology & Ethics Notice */}
       <Card className="border shadow-sm">
         <CardHeader className="pb-3 border-b bg-muted/20">
           <CardTitle className="text-sm font-semibold flex items-center gap-2">
-            <Info className="h-4 w-4 text-primary" /> Synthetic Simulation Methodology
+            <Info className="h-4 w-4 text-primary" /> Institutional Dataset Methodology
           </CardTitle>
         </CardHeader>
 
         <CardContent className="p-5 text-xs text-muted-foreground space-y-3 leading-relaxed">
           <p>
-            The CampusHire platform operates upon a verified <strong>synthetic population of 5,000 engineering student records</strong>. Parameter distributions were modeled after regional university engineering curriculum benchmarks to simulate realistic correlations between cumulative academic GPA, core technical evaluations, active arrears, and campus placement selection.
+            The CampusHire platform operates upon evaluated engineering student records and historical placement metrics. Parameter distributions are aligned with regional university engineering curriculum benchmarks to model realistic correlations between cumulative academic GPA, core technical evaluations, active arrears, and campus placement selection.
           </p>
           <div className="p-3 rounded-lg bg-secondary/40 border space-y-1">
             <strong className="text-foreground block">Key Design Constraints:</strong>

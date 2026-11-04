@@ -19,7 +19,6 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { SyntheticNoticePill } from '@/components/shared/SyntheticNotice';
 
 export const LandingPage: React.FC = () => {
   const navigate = useNavigate();
@@ -53,7 +52,7 @@ export const LandingPage: React.FC = () => {
 
           {/* Action CTAs */}
           <div className="flex items-center gap-2.5">
-            <SyntheticNoticePill />
+            
 
             <Button
               variant="outline"

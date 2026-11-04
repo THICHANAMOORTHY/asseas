@@ -35,7 +35,7 @@ export const CareerRecommendations: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'all' | 'technical' | 'interviews' | 'aptitude'>('all');
 
-  const studentId = isStudent ? currentUser.studentId || 'CH-2025-0001' : 'CH-2025-0001';
+  const studentId = isStudent ? currentUser.studentId || '720523106032' : '720523106032';
 
   useEffect(() => {
     let mounted = true;
@@ -44,7 +44,7 @@ export const CareerRecommendations: React.FC = () => {
       try {
         let found = await campusApi.getStudentById(studentId);
         if (!found) {
-          found = await campusApi.getStudentById('CH-2025-0001');
+          found = await campusApi.getStudentById('720523106032');
         }
         if (mounted && found) {
           setStudent(found);

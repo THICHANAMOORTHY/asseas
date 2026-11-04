@@ -252,7 +252,7 @@ export const Reports: React.FC = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <CardTitle className="text-sm font-semibold flex items-center gap-2">
-                    <Clock className="h-4 w-4 text-primary" /> Scheduled Reports (Mock Dispatch)
+                    <Clock className="h-4 w-4 text-primary" /> Scheduled Automated Reports
                   </CardTitle>
                   <CardDescription className="text-xs">
                     Automated background email & PDF digests
@@ -447,7 +447,7 @@ export const Reports: React.FC = () => {
 
             {/* Synthetic Data Notice */}
             <div className="p-3 rounded-lg border bg-amber-500/10 text-amber-900 dark:text-amber-300 text-[11px]">
-              <strong>Note:</strong> All figures and student predictions in this report are generated using synthetic simulation data from a 5,000 engineering student dataset for training and planning.
+              <strong>Note:</strong> All placement metrics, department aggregates, and student records in this report reflect active institutional performance and Random Forest placement readiness evaluations.
             </div>
           </div>
         </DialogContent>

@@ -250,7 +250,7 @@ export const SupabaseCloudHub: React.FC = () => {
               <h4 className="font-semibold text-foreground text-xs">How Data Synchronization Works:</h4>
               <ul className="list-disc pl-5 space-y-1 text-muted-foreground leading-relaxed text-xs">
                 <li>
-                  <strong className="text-foreground">Student Directory:</strong> Automatically loads from Supabase when records exist in <code>public.students</code>, with fallback to the local synthetic dataset.
+                  <strong className="text-foreground">Student Directory:</strong> Automatically loads from Supabase when records exist in <code>public.students</code>, with fallback to local institutional student records.
                 </li>
                 <li>
                   <strong className="text-foreground">Prediction Logs:</strong> Every time a user executes or adjusts a prediction in the Prediction Studio, the simulation parameters and SHAP outputs are logged to <code>public.prediction_logs</code>.

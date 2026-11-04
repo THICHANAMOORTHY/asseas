@@ -44,13 +44,13 @@ export const PredictionHistory: React.FC = () => {
   const [historyItems, setHistoryItems] = useState<HistoryItem[]>([]);
   const [selectedItem, setSelectedItem] = useState<HistoryItem | null>(null);
 
-  const studentId = isStudent ? currentUser.studentId || 'CH-2025-0001' : 'CH-2025-0001';
+  const studentId = isStudent ? currentUser.studentId || '720523106032' : '720523106032';
 
   useEffect(() => {
     async function loadData() {
       let found = await campusApi.getStudentById(studentId);
       if (!found) {
-        found = await campusApi.getStudentById('CH-2025-0001');
+        found = await campusApi.getStudentById('720523106032');
       }
       if (found) {
         setStudent(found);

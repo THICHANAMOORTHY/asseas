@@ -427,7 +427,7 @@ export const StudentDirectory: React.FC = () => {
           <div className="relative sm:col-span-2">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
             <Input
-              placeholder="Search name, ID (e.g. CH-2025-0012)..."
+              placeholder="Search name, ID (e.g. 720523106032)..."
               value={search}
               onChange={(e) => { setSearch(e.target.value); setPage(1); }}
               className="pl-8 text-xs h-8"

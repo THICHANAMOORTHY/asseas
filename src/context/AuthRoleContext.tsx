@@ -27,11 +27,12 @@ const PRESET_USERS: Record<UserRole, CurrentUser> = {
     department: 'CSE',
   },
   'Student': {
-    id: 'USR-STU-42',
-    name: 'Aarav Sharma',
-    email: 'aarav.sharma@campus.edu',
+    id: '720523106032',
+    name: 'THICHANAMOORTHY THICHU',
+    email: 'thichu683@gmail.com',
     role: 'Student',
-    studentId: 'CH-2025-0001',
+    studentId: '720523106032',
+    department: 'ECE',
   },
 };
 
@@ -42,7 +43,11 @@ export const AuthRoleProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     const saved = localStorage.getItem('campushire_active_user');
     if (saved) {
       try {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        if (parsed.studentId === 'CH-2025-0001' || parsed.name === 'Aarav Sharma') {
+          return PRESET_USERS['Student'];
+        }
+        return parsed;
       } catch {
         // ignore
       }

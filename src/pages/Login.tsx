@@ -19,7 +19,6 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { SyntheticNoticePill } from '@/components/shared/SyntheticNotice';
 import { cn } from '@/lib/utils';
 
 export const Login: React.FC = () => {
@@ -27,8 +26,8 @@ export const Login: React.FC = () => {
   const { setRole, setUser } = useAuthRole();
 
   const [loginRole, setLoginRole] = useState<'Student' | 'Officer' | 'Faculty'>('Student');
-  const [identifier, setIdentifier] = useState('710521104042');
-  const [password, setPassword] = useState('password123');
+  const [identifier, setIdentifier] = useState('720523106032');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
   const [forgotModalOpen, setForgotModalOpen] = useState(false);
@@ -40,8 +39,8 @@ export const Login: React.FC = () => {
     setLoginRole(role);
     setErrorMessage('');
     if (role === 'Student') {
-      setIdentifier('710521104042');
-      setPassword('password123');
+      setIdentifier('720523106032');
+      setPassword('');
     } else if (role === 'Officer') {
       setIdentifier('placement.director@easa.edu.in');
       setPassword('adminPass2026');
@@ -71,9 +70,19 @@ export const Login: React.FC = () => {
       setIsLoading(false);
 
       if (loginRole === 'Student') {
-        let resolvedName = identifier.includes('7105') ? 'Aarav Sharma' : 'Student Candidate';
-        let resolvedDept = 'CSE';
-        let matchedId = identifier;
+        let matchedId = identifier.trim();
+        let resolvedName = 'THICHANAMOORTHY THICHU';
+        let resolvedDept = 'ECE';
+
+        if (matchedId === '720523106037') {
+          resolvedName = 'Thichu Thichana';
+          resolvedDept = 'ECE';
+        } else if (matchedId === '927621BCS088') {
+          resolvedName = 'Karthik Raja';
+          resolvedDept = 'CSE';
+        } else if (matchedId !== '720523106032') {
+          resolvedName = 'Student Candidate';
+        }
 
         try {
           const stored = localStorage.getItem(`campushire_student_${identifier}`);
@@ -145,7 +154,7 @@ export const Login: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-2">
-            <SyntheticNoticePill />
+            
             <Button
               variant="outline"
               size="sm"
@@ -306,12 +315,12 @@ export const Login: React.FC = () => {
             <div className="grid grid-cols-1 gap-1.5 text-xs">
               <button
                 type="button"
-                onClick={() => handleQuickDemo('Student', 'CH-2025-0001')}
+                onClick={() => handleQuickDemo('Student', '720523106032')}
                 className="p-2 rounded-lg bg-[#F7F6FC] hover:bg-[#E8E5F5] border border-[#E8E5F5] text-left flex items-center justify-between transition-colors"
               >
                 <div>
-                  <span className="font-bold text-[#1D1745] block">Aarav Sharma</span>
-                  <span className="text-[10px] text-muted-foreground">Student • CSE Final Year</span>
+                  <span className="font-bold text-[#1D1745] block">THICHANAMOORTHY THICHU</span>
+                  <span className="text-[10px] text-muted-foreground">Student • ECE (720523106032)</span>
                 </div>
                 <Badge variant="outline" className="text-[9px]">
                   Sign In →

@@ -16,7 +16,6 @@ import {
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { SyntheticNoticePill } from '@/components/shared/SyntheticNotice';
 
 export const LoginRoleSelect: React.FC = () => {
   const navigate = useNavigate();
@@ -64,7 +63,7 @@ export const LoginRoleSelect: React.FC = () => {
           </div>
         </div>
 
-        <SyntheticNoticePill />
+        
       </div>
 
       {/* Main Container */}
@@ -154,8 +153,8 @@ export const LoginRoleSelect: React.FC = () => {
 
             <CardContent className="pt-2 pb-5 space-y-4">
               <div className="p-2.5 rounded-lg bg-secondary/50 border text-[11px] text-muted-foreground">
-                <span className="font-semibold text-foreground block">Aarav Sharma</span>
-                Candidate CH-2025-0001 (7th Sem)
+                <span className="font-semibold text-foreground block">THICHANAMOORTHY THICHU</span>
+                Candidate 720523106032 (ECE)
               </div>
 
               <Button
@@ -219,7 +218,7 @@ export const LoginRoleSelect: React.FC = () => {
       {/* Footer Disclaimer */}
       <footer className="max-w-6xl w-full mx-auto text-center text-[11px] text-muted-foreground pt-4 border-t">
         <p>
-          CampusHire Placement Analytics System • Powered by Random Forest v2.4.0 (5,000 Synthetic Samples)
+          CampusHire Placement Analytics System • Powered by Random Forest ML Model
         </p>
         <p className="mt-0.5">
           For educational modeling & student career development purposes only.

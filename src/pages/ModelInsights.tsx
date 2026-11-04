@@ -99,7 +99,7 @@ export const ModelInsights: React.FC = () => {
           <Calendar className="h-3.5 w-3.5 text-primary" />
           <span>Trained: {new Date(metrics.metadata.trainedDate).toLocaleDateString()}</span>
           <span>•</span>
-          <span>{metrics.metadata.syntheticSamplesCount.toLocaleString()} Synthetic Profiles</span>
+          <span>{metrics.metadata.syntheticSamplesCount.toLocaleString()} Training Profiles</span>
         </div>
       </div>
 
@@ -265,7 +265,7 @@ export const ModelInsights: React.FC = () => {
         {/* Class Balance */}
         <Card className="lg:col-span-5 border shadow-sm flex flex-col justify-between">
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-semibold">Synthetic Cohort Class Balance</CardTitle>
+            <CardTitle className="text-sm font-semibold">Training Dataset Class Balance</CardTitle>
             <CardDescription className="text-xs">Ground-truth label distribution in training set</CardDescription>
           </CardHeader>
 

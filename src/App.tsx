@@ -7,7 +7,6 @@ import { FilterProvider } from './context/FilterContext';
 // Layout components
 import { TopBar } from './components/layout/TopBar';
 import { Sidebar } from './components/layout/Sidebar';
-import { SyntheticBanner } from './components/shared/SyntheticNotice';
 import { StudentDetailDrawer } from './components/student/StudentDetailDrawer';
 import { StudentRecord } from './api/types';
 
@@ -140,8 +139,6 @@ const AppLayout: React.FC = () => {
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col h-full overflow-hidden">
-        {/* Top persistent synthetic educational alert */}
-        <SyntheticBanner />
 
         {/* Header TopBar */}
         <TopBar

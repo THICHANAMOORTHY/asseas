@@ -14,8 +14,39 @@ import { SYNTHETIC_STUDENTS } from './mockData';
 import { runModelInference } from './modelEngine';
 import { supabase } from '@/lib/supabase';
 
-// In-memory student dataset state (allows adding notes, reassigning mentors, etc. during user demo session)
-let studentsState: StudentRecord[] = [...SYNTHETIC_STUDENTS];
+// Clean up any legacy synthetic records in localStorage on startup
+const purgeLegacySyntheticCache = () => {
+  try {
+    if (typeof localStorage !== 'undefined') {
+      for (let i = localStorage.length - 1; i >= 0; i--) {
+        const key = localStorage.key(i);
+        if (key && (key.startsWith('campushire_student_CH-') || key.includes('synthetic'))) {
+          localStorage.removeItem(key);
+        }
+      }
+    }
+  } catch {}
+};
+purgeLegacySyntheticCache();
+
+const loadInitialStudents = (): StudentRecord[] => {
+  try {
+    if (typeof localStorage !== 'undefined') {
+      const custom = localStorage.getItem('campushire_custom_students');
+      if (custom) {
+        const parsed = JSON.parse(custom);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          const clean = parsed.filter((s: any) => !s.student_id?.startsWith('CH-'));
+          if (clean.length > 0) return clean;
+        }
+      }
+    }
+  } catch {}
+  return [...SYNTHETIC_STUDENTS];
+};
+
+// In-memory student dataset state (initialized with real institutional students)
+let studentsState: StudentRecord[] = loadInitialStudents();
 
 export interface StudentFilterParams {
   search?: string;
@@ -393,6 +424,7 @@ export const campusApi = {
 
     try {
       localStorage.setItem(`campushire_student_${enriched.student_id}`, JSON.stringify(enriched));
+      localStorage.setItem('campushire_custom_students', JSON.stringify(studentsState));
     } catch {}
 
     try {
