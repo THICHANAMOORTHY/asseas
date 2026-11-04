@@ -104,13 +104,20 @@ const PageLoader: React.FC = () => (
   </div>
 );
 
-// Dynamic Home Route: student sees profile directly, officer/faculty sees analytics dashboard
+// Dynamic Home Route: Directly loads the Placement Section
 const HomeRoute: React.FC<{ onOpenDrawer?: (s: StudentRecord) => void }> = ({ onOpenDrawer }) => {
-  const { isStudent } = useAuthRole();
-  if (isStudent) {
-    return <StudentProfile />;
+  return <StudentProfile />;
+};
+
+// Protected Route Gate: Enforces compulsory sign in across all placement portal views
+const ProtectedRoute: React.FC = () => {
+  const { isAuthenticated } = useAuthRole();
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
   }
-  return <Dashboard onSelectStudent={onOpenDrawer} />;
+
+  return <Outlet />;
 };
 
 // Main Layout Shell with responsive Sidebar, TopBar, and Drawer
@@ -179,22 +186,24 @@ export function App() {
                   <Route path="/login-quick" element={<LoginRoleSelect />} />
                   <Route path="/register" element={<RegisterStudent />} />
 
-                  {/* Main App Layout Shell Routes with Outlet */}
-                  <Route element={<AppLayout />}>
-                    <Route index element={<HomeRoute />} />
-                    <Route path="students" element={<StudentDirectory />} />
-                    <Route path="students/:id" element={<StudentProfile />} />
-                    <Route path="student-profile" element={<StudentProfile />} />
-                    <Route path="predict" element={<PredictionStudio />} />
-                    <Route path="recommendations" element={<CareerRecommendations />} />
-                    <Route path="history" element={<PredictionHistory />} />
-                    <Route path="at-risk" element={<AtRiskMentoring />} />
-                    <Route path="model" element={<ModelInsights />} />
-                    <Route path="drives" element={<CampusDrives />} />
-                    <Route path="reports" element={<Reports />} />
-                    <Route path="cloud-status" element={<SupabaseCloudHub />} />
-                    <Route path="settings" element={<SettingsDataDict />} />
-                    <Route path="*" element={<Navigate to="/" replace />} />
+                  {/* Compulsory Authentication Shell: Redirects to /login if unauthenticated */}
+                  <Route element={<ProtectedRoute />}>
+                    <Route element={<AppLayout />}>
+                      <Route index element={<HomeRoute />} />
+                      <Route path="students" element={<StudentDirectory />} />
+                      <Route path="students/:id" element={<StudentProfile />} />
+                      <Route path="student-profile" element={<StudentProfile />} />
+                      <Route path="predict" element={<PredictionStudio />} />
+                      <Route path="recommendations" element={<CareerRecommendations />} />
+                      <Route path="history" element={<PredictionHistory />} />
+                      <Route path="at-risk" element={<AtRiskMentoring />} />
+                      <Route path="model" element={<ModelInsights />} />
+                      <Route path="drives" element={<CampusDrives />} />
+                      <Route path="reports" element={<Reports />} />
+                      <Route path="cloud-status" element={<SupabaseCloudHub />} />
+                      <Route path="settings" element={<SettingsDataDict />} />
+                      <Route path="*" element={<Navigate to="/student-profile" replace />} />
+                    </Route>
                   </Route>
                 </Routes>
               </Suspense>

@@ -3,6 +3,9 @@ import { UserRole, CurrentUser, Department } from '../api/types';
 
 interface AuthRoleContextType {
   currentUser: CurrentUser;
+  isAuthenticated: boolean;
+  login: (user: CurrentUser) => void;
+  logout: () => void;
   setRole: (role: UserRole) => void;
   setUser: (user: CurrentUser) => void;
   setFacultyDepartment: (dept: Department) => void;
@@ -12,7 +15,7 @@ interface AuthRoleContextType {
   isStudent: boolean;
 }
 
-const PRESET_USERS: Record<UserRole, CurrentUser> = {
+export const PRESET_USERS: Record<UserRole, CurrentUser> = {
   'Placement Officer': {
     id: 'USR-PO-01',
     name: 'Dr. Vikramaditya Rao',
@@ -36,51 +39,86 @@ const PRESET_USERS: Record<UserRole, CurrentUser> = {
   },
 };
 
+const DEFAULT_GUEST: CurrentUser = {
+  id: '',
+  name: 'Candidate',
+  email: '',
+  role: 'Student',
+  studentId: '720523106032',
+  department: 'ECE',
+};
+
 const AuthRoleContext = createContext<AuthRoleContextType | undefined>(undefined);
 
 export const AuthRoleProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState<CurrentUser>(() => {
-    const saved = localStorage.getItem('campushire_active_user');
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        if (parsed.studentId === 'CH-2025-0001' || parsed.name === 'Aarav Sharma') {
-          return PRESET_USERS['Student'];
+  const [currentUserState, setCurrentUserState] = useState<CurrentUser | null>(() => {
+    try {
+      if (typeof localStorage !== 'undefined') {
+        const authSession = localStorage.getItem('campushire_auth_session');
+        const saved = localStorage.getItem('campushire_active_user');
+        if (authSession === 'active' && saved) {
+          const parsed = JSON.parse(saved);
+          if (parsed && parsed.name && parsed.role) {
+            if (parsed.studentId === 'CH-2025-0001' || parsed.name === 'Aarav Sharma') {
+              return PRESET_USERS['Student'];
+            }
+            return parsed;
+          }
         }
-        return parsed;
-      } catch {
-        // ignore
       }
-    }
-    return PRESET_USERS['Placement Officer'];
+    } catch {}
+    // Compulsory sign in: not authenticated by default!
+    return null;
   });
 
+  const isAuthenticated = Boolean(currentUserState);
+
   useEffect(() => {
-    localStorage.setItem('campushire_active_user', JSON.stringify(currentUser));
-  }, [currentUser]);
+    if (typeof localStorage !== 'undefined') {
+      if (currentUserState) {
+        localStorage.setItem('campushire_auth_session', 'active');
+        localStorage.setItem('campushire_active_user', JSON.stringify(currentUserState));
+      } else {
+        localStorage.removeItem('campushire_auth_session');
+        localStorage.removeItem('campushire_active_user');
+      }
+    }
+  }, [currentUserState]);
+
+  const login = (user: CurrentUser) => {
+    try {
+      localStorage.setItem('campushire_auth_session', 'active');
+      localStorage.setItem('campushire_active_user', JSON.stringify(user));
+    } catch {}
+    setCurrentUserState(user);
+  };
+
+  const logout = () => {
+    try {
+      localStorage.removeItem('campushire_auth_session');
+      localStorage.removeItem('campushire_active_user');
+    } catch {}
+    setCurrentUserState(null);
+  };
 
   const setRole = (role: UserRole) => {
-    setCurrentUser(PRESET_USERS[role]);
+    const newUser = PRESET_USERS[role];
+    login(newUser);
   };
 
   const setUser = (user: CurrentUser) => {
-    setCurrentUser(user);
+    login(user);
   };
 
   const setFacultyDepartment = (department: Department) => {
-    setCurrentUser((prev) => ({
-      ...prev,
-      department,
-    }));
+    setCurrentUserState((prev) => (prev ? { ...prev, department } : prev));
   };
 
   const setStudentId = (studentId: string) => {
-    setCurrentUser((prev) => ({
-      ...prev,
-      studentId,
-    }));
+    setCurrentUserState((prev) => (prev ? { ...prev, studentId } : prev));
   };
 
+  const currentUser = currentUserState || DEFAULT_GUEST;
   const isPlacementOfficer = currentUser.role === 'Placement Officer';
   const isFaculty = currentUser.role === 'Faculty';
   const isStudent = currentUser.role === 'Student';
@@ -89,6 +127,9 @@ export const AuthRoleProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     <AuthRoleContext.Provider
       value={{
         currentUser,
+        isAuthenticated,
+        login,
+        logout,
         setRole,
         setUser,
         setFacultyDepartment,
@@ -110,4 +151,3 @@ export const useAuthRole = () => {
   }
   return ctx;
 };
-

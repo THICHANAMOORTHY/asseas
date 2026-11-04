@@ -26,11 +26,7 @@ export const LoginRoleSelect: React.FC = () => {
 
   const handleRoleSelect = (role: UserRole) => {
     setRole(role);
-    if (role === 'Student') {
-      navigate('/student-profile');
-    } else {
-      navigate('/');
-    }
+    navigate('/student-profile');
   };
 
   const handleCustomLogin = (e: React.FormEvent) => {

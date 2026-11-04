@@ -30,7 +30,7 @@ interface TopBarProps {
 
 export const TopBar: React.FC<TopBarProps> = ({ onToggleSidebar, onOpenStudentDetail }) => {
   const navigate = useNavigate();
-  const { currentUser, setUser, isStudent } = useAuthRole();
+  const { currentUser, setUser, isStudent, logout } = useAuthRole();
 
   const [isDark, setIsDark] = useState<boolean>(() => {
     return (
@@ -391,6 +391,7 @@ export const TopBar: React.FC<TopBarProps> = ({ onToggleSidebar, onOpenStudentDe
                 <button
                   onClick={() => {
                     setProfileDropdownOpen(false);
+                    logout();
                     navigate('/login');
                   }}
                   className="w-full px-3 py-2 text-left rounded-lg hover:bg-rose-50 text-[#D94343] font-medium flex items-center gap-2.5 transition-colors"

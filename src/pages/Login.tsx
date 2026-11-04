@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuthRole } from '@/context/AuthRoleContext';
+import { useAuthRole, PRESET_USERS } from '@/context/AuthRoleContext';
 import { UserRole } from '@/api/types';
 import {
   GraduationCap,
@@ -23,7 +23,7 @@ import { cn } from '@/lib/utils';
 
 export const Login: React.FC = () => {
   const navigate = useNavigate();
-  const { setRole, setUser } = useAuthRole();
+  const { login, setRole, setUser } = useAuthRole();
 
   const [loginRole, setLoginRole] = useState<'Student' | 'Officer' | 'Faculty'>('Student');
   const [identifier, setIdentifier] = useState('720523106032');
@@ -94,7 +94,7 @@ export const Login: React.FC = () => {
           }
         } catch {}
 
-        setUser({
+        login({
           id: matchedId,
           name: resolvedName,
           email: identifier.includes('@') ? identifier : `${identifier}@easa.edu.in`,
@@ -104,22 +104,18 @@ export const Login: React.FC = () => {
         });
         navigate('/student-profile');
       } else if (loginRole === 'Faculty') {
-        setRole('Faculty');
-        navigate('/');
+        login(PRESET_USERS['Faculty']);
+        navigate('/student-profile');
       } else {
-        setRole('Placement Officer');
-        navigate('/');
+        login(PRESET_USERS['Placement Officer']);
+        navigate('/student-profile');
       }
     }, 400);
   };
 
   const handleQuickDemo = (role: UserRole, studentId?: string) => {
-    setRole(role);
-    if (role === 'Student') {
-      navigate('/student-profile');
-    } else {
-      navigate('/');
-    }
+    login(PRESET_USERS[role]);
+    navigate('/student-profile');
   };
 
   const handleSendReset = (e: React.FormEvent) => {
