@@ -113,7 +113,7 @@ export const ModelInsights: React.FC = () => {
           subtitle="Test set overall"
           benchmark="Baseline: 58%"
           trend="up"
-          trendValue="0.848 Score"
+          trendValue="0.806 Score"
           icon={<Award className="h-5 w-5" />}
           infoTooltip="Total correct classifications / Total evaluation cohort"
           status="success"
@@ -161,7 +161,7 @@ export const ModelInsights: React.FC = () => {
           subtitle="Discriminative power"
           benchmark="Excellent (> 0.90)"
           trend="up"
-          trendValue="0.924 Score"
+          trendValue="0.882 Score"
           icon={<BarChart3 className="h-5 w-5" />}
           infoTooltip="Area Under the Receiver Operating Characteristic Curve across all decision thresholds"
           status="success"

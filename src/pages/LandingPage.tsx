@@ -136,7 +136,7 @@ export const LandingPage: React.FC = () => {
             </span>
             <span className="flex items-center gap-1.5">
               <BrainCircuit className="h-4 w-4 text-[#29136F]" />
-              <span>Random Forest ML (AUC 0.924)</span>
+              <span>Random Forest ML (AUC 0.882)</span>
             </span>
             <span className="flex items-center gap-1.5">
               <Sparkles className="h-4 w-4 text-[#FFC20E]" />

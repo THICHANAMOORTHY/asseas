@@ -212,10 +212,10 @@ export const Dashboard: React.FC<DashboardProps> = ({ onSelectStudent }) => {
         <KPICard
           title="Model Accuracy"
           value={`${(summary.modelAccuracy * 100).toFixed(1)}%`}
-          subtitle="ROC-AUC: 0.924"
+          subtitle="ROC-AUC: 0.882"
           benchmark="Random Forest v2.4"
           icon={<Award className="h-5 w-5" />}
-          infoTooltip="Model validation performance: Accuracy 0.848, F1-Score 0.866, AUC 0.924"
+          infoTooltip="Kaggle Dataset Random Forest Model: Accuracy 0.806, F1-Score 0.767, AUC 0.882"
           status="success"
         />
       </div>

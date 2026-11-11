@@ -123,7 +123,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       label: 'Model Insights',
       to: '/model',
       icon: <LineChart className="h-4 w-4" />,
-      badge: '0.924 AUC',
+      badge: '0.882 AUC',
       roles: ['Placement Officer'],
     },
     {
