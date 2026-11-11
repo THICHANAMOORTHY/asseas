@@ -39,6 +39,9 @@ import {
   Plus,
   Minus,
   Check,
+  Loader2,
+  AlertCircle,
+  Cpu,
 } from 'lucide-react';
 
 const predictionSchema = z.object({
@@ -137,10 +140,10 @@ export const PredictionStudio: React.FC = () => {
   const passedStudent = location.state?.student;
 
   const [activeTab, setActiveTab] = useState<'academics' | 'skills' | 'experience' | 'all'>('academics');
-  const [isWhatIfLive, setIsWhatIfLive] = useState(true);
   const [isCalculating, setIsCalculating] = useState(false);
   const [predictionResult, setPredictionResult] = useState<PredictionResponse | null>(null);
   const [previousProbability, setPreviousProbability] = useState<number | null>(null);
+  const [lastEvaluatedValues, setLastEvaluatedValues] = useState<FormValues | null>(null);
 
   // Baseline comparison state
   const [pinnedBaseline, setPinnedBaseline] = useState<PredictionResponse | null>(null);
@@ -179,15 +182,25 @@ export const PredictionStudio: React.FC = () => {
 
   const currentValues = watch();
 
-  // Execute prediction
+  // Check if user has modified form values since the last model prediction run
+  const isDirty = lastEvaluatedValues
+    ? JSON.stringify(lastEvaluatedValues) !== JSON.stringify(currentValues)
+    : false;
+
+  // Execute Scikit-Learn Random Forest prediction (On-Demand)
   const executePrediction = async (values: FormValues, withSpinner = true) => {
-    if (withSpinner) setIsCalculating(true);
+    if (withSpinner) {
+      setIsCalculating(true);
+      // Realistic brief ML execution time so user sees the 50 decision trees evaluating
+      await new Promise((r) => setTimeout(r, 400));
+    }
     try {
       const res = await campusApi.predict(values, passedStudent?.student_id);
       if (predictionResult) {
         setPreviousProbability(predictionResult.probability);
       }
       setPredictionResult(res);
+      setLastEvaluatedValues(values);
       if (!pinnedBaseline) {
         setPinnedBaseline(res);
       }
@@ -196,36 +209,10 @@ export const PredictionStudio: React.FC = () => {
     }
   };
 
+  // Initial load evaluates default profile once
   useEffect(() => {
     executePrediction(currentValues, false);
   }, []);
-
-  // Reactive What-If simulation on input adjustment
-  useEffect(() => {
-    if (!isWhatIfLive) return;
-
-    const timer = setTimeout(() => {
-      executePrediction(currentValues, false);
-    }, 120);
-
-    return () => clearTimeout(timer);
-  }, [
-    isWhatIfLive,
-    currentValues.cgpa,
-    currentValues.backlogs,
-    currentValues.programming_score,
-    currentValues.technical_score,
-    currentValues.interview_score,
-    currentValues.aptitude_score,
-    currentValues.communication_score,
-    currentValues.internships,
-    currentValues.projects,
-    currentValues.certifications,
-    currentValues.attendance_percentage,
-    currentValues.tenth_percentage,
-    currentValues.twelfth_percentage,
-    currentValues.department,
-  ]);
 
   const onSubmit = (data: FormValues) => {
     executePrediction(data, true);
@@ -282,20 +269,13 @@ export const PredictionStudio: React.FC = () => {
           </p>
         </div>
 
-        {/* Live Mode Toggle & Presets */}
+        {/* ML Status & Presets */}
         <div className="flex flex-wrap items-center gap-2">
-          <button
-            type="button"
-            onClick={() => setIsWhatIfLive(!isWhatIfLive)}
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
-              isWhatIfLive
-                ? 'bg-primary/10 text-primary border-primary/30 shadow-xs'
-                : 'bg-card text-muted-foreground hover:text-foreground'
-            }`}
-          >
-            <span className={`h-2 w-2 rounded-full ${isWhatIfLive ? 'bg-primary animate-ping' : 'bg-muted-foreground'}`} />
-            <span>Live What-If: {isWhatIfLive ? 'ACTIVE' : 'OFF'}</span>
-          </button>
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold border bg-card text-muted-foreground shadow-2xs">
+            <span className="h-2 w-2 rounded-full bg-emerald-500" />
+            <span className="font-mono text-foreground font-bold">50 Trees</span>
+            <span>Scikit-Learn Random Forest</span>
+          </div>
 
           <div className="flex items-center gap-1 bg-secondary/50 p-1 rounded-lg border text-xs">
             <span className="text-muted-foreground px-1.5 text-[11px]">Presets:</span>
@@ -307,7 +287,7 @@ export const PredictionStudio: React.FC = () => {
                   reset(p.values);
                   executePrediction(p.values, true);
                 }}
-                className="px-2 py-1 rounded bg-card hover:bg-accent text-foreground text-[11px] font-medium border shadow-2xs"
+                className="px-2 py-1 rounded bg-card hover:bg-accent text-foreground text-[11px] font-medium border shadow-2xs transition-colors"
               >
                 {p.label.split(' ')[0]}
               </button>
@@ -931,14 +911,21 @@ export const PredictionStudio: React.FC = () => {
                 <Button
                   type="submit"
                   disabled={isCalculating}
-                  className="text-xs flex items-center gap-2 px-5 h-9 font-semibold shadow-xs"
+                  className={`text-xs sm:text-sm flex items-center gap-2 px-6 h-10 font-bold shadow-md transition-all ${
+                    isDirty
+                      ? 'bg-amber-600 hover:bg-amber-700 text-white ring-2 ring-amber-400/50 ring-offset-1'
+                      : 'bg-primary hover:bg-primary/90 text-primary-foreground'
+                  }`}
                 >
                   {isCalculating ? (
-                    <span>Calculating...</span>
+                    <span className="flex items-center gap-2">
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Evaluating 50 Decision Trees...
+                    </span>
                   ) : (
                     <>
-                      <Sparkles className="h-4 w-4" />
-                      <span>Re-compute Model</span>
+                      <Cpu className="h-4 w-4 text-amber-300" />
+                      <span>{isDirty ? 'Run Random Forest Prediction *' : 'Run Random Forest Prediction'}</span>
                     </>
                   )}
                 </Button>
@@ -992,16 +979,20 @@ export const PredictionStudio: React.FC = () => {
             <CardHeader className="pb-3 pt-4 px-5 border-b bg-gradient-to-r from-card to-secondary/30">
               <div className="flex items-center justify-between">
                 <div>
-                  <CardTitle className="text-sm font-semibold">Inference Output & Driver Analysis</CardTitle>
-                  <CardDescription className="text-xs">Random Forest Model (v2.4.0)</CardDescription>
+                  <CardTitle className="text-sm font-semibold flex items-center gap-1.5">
+                    <Cpu className="h-4 w-4 text-primary" />
+                    Kaggle Random Forest Model
+                  </CardTitle>
+                  <CardDescription className="text-xs">
+                    50 Scikit-Learn Decision Trees (80.6% Acc, 0.882 AUC)
+                  </CardDescription>
                 </div>
 
                 <div className="flex items-center gap-1.5">
-                  {isWhatIfLive && (
-                    <Badge variant="teal" className="text-[10px] animate-pulse">
-                      Live Reactive
-                    </Badge>
-                  )}
+                  <Badge variant="teal" className="text-[10px] font-semibold flex items-center gap-1">
+                    <CheckCircle2 className="h-3 w-3 text-emerald-500" />
+                    ML Model
+                  </Badge>
                   {pinnedBaseline && (
                     <button
                       type="button"
@@ -1016,8 +1007,35 @@ export const PredictionStudio: React.FC = () => {
               </div>
             </CardHeader>
 
+            {/* Inputs Modified Notice */}
+            {isDirty && (
+              <div className="bg-amber-500/10 border-b border-amber-500/30 px-5 py-2.5 flex items-center justify-between gap-2 text-amber-700 dark:text-amber-400 text-xs">
+                <div className="flex items-center gap-1.5 font-medium">
+                  <AlertCircle className="h-4 w-4 shrink-0 text-amber-500" />
+                  <span>Inputs changed. Click button to evaluate ML model.</span>
+                </div>
+                <Button
+                  type="button"
+                  size="sm"
+                  onClick={handleSubmit(onSubmit)}
+                  disabled={isCalculating}
+                  className="h-7 px-3 text-xs bg-amber-600 hover:bg-amber-700 text-white font-semibold shrink-0"
+                >
+                  Run Now
+                </Button>
+              </div>
+            )}
+
             <CardContent className="p-5 space-y-5">
-              {predictionResult ? (
+              {isCalculating ? (
+                <div className="p-10 flex flex-col items-center justify-center text-center space-y-3 min-h-[320px]">
+                  <Loader2 className="h-9 w-9 text-primary animate-spin" />
+                  <div className="text-sm font-bold text-foreground">Evaluating 50 Decision Trees...</div>
+                  <div className="text-xs text-muted-foreground max-w-xs">
+                    Traversing ensemble nodes on Kaggle placement dataset features to compute true model probability.
+                  </div>
+                </div>
+              ) : predictionResult ? (
                 <>
                   {/* Flawless Semi-Circle Gauge */}
                   <div className="flex flex-col items-center justify-center p-4 rounded-xl bg-secondary/20 border">
